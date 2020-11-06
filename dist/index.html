@@ -185,16 +185,18 @@
 
                 })
                 </script>
-                <!-- Project Two Row-->
+                
+                <!-- Endangered Sites-->
                 <div class="row justify-content-center no-gutters">
                     <div class="col-lg-6"><img class="img-fluid" src="assets/img/demo-image-02.jpg" alt="" /></div>
                     <div class="col-lg-6 order-lg-first">
                         <div class="bg-black text-center h-100 project">
                             <div class="d-flex h-100">
                                 <div class="project-text w-100 my-auto text-center text-lg-right">
+    <div id="#chart svg"></div>
                                     
-                                    <script>
-                                    nv.addGraph(function() {
+    <script>                        
+  nv.addGraph(function() {
   var chart = nv.models.pieChart()
       .x(function(d) { return d.label })
       .y(function(d) { return d.value })
@@ -207,7 +209,8 @@
 
   return chart;
 });
-                                        function exampleData() {
+                                        
+ function exampleData() {
   return  [
       { 
         "label": "One",
@@ -244,7 +247,7 @@
     ];
 }
 
-                                    </script>
+</script>
                                     
                                     <h4 class="text-white">Frequency of Endagered Sites by Criteria</h4>
                                     <p class="mb-0 text-white-50">As of July 2019, there are 53 entries (17 natural, 36 cultural) on the List of World Heritage in Danger. Arranged by the UNESCO regions, 21 of the listed sites are located in the Arab States (of which 6 are located in Syria and 5 in Libya), 16 in Africa (of which 5 are in the Democratic Republic of the Congo), 6 in Latin America and the Caribbean, 6 in Asia and the Pacific, and 4 in Europe and North America. The majority of the endangered natural sites (12) are located in Africa.</p>
