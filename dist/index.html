@@ -94,64 +94,23 @@
                         <div class="bg-black text-center h-100 project">
                             <div class="d-flex h-100">
                                 <div class="project-text w-100 my-auto text-center text-lg-right">
-                                    <script> chart = {
-  const arcs = pie(data);
+                                    
+                                    <script>
+                                    nv.addGraph(function() {
+  var chart = nv.models.pieChart()
+      .x(function(d) { return d.label })
+      .y(function(d) { return d.value })
+      .showLabels(true);
 
-  const svg = d3.create("svg")
-      .attr("viewBox", [-width / 2, -height / 2, width, height]);
+    d3.select("#chart svg")
+        .datum(exampleData())
+        .transition().duration(350)
+        .call(chart);
 
-  svg.append("g")
-      .attr("stroke", "white")
-    .selectAll("path")
-    .data(arcs)
-    .join("path")
-      .attr("fill", d => color(d.data.name))
-      .attr("d", arc)
-    .append("title")
-      .text(d => `${d.data.name}: ${d.data.value.toLocaleString()}`);
-
-  svg.append("g")
-      .attr("font-family", "sans-serif")
-      .attr("font-size", 12)
-      .attr("text-anchor", "middle")
-    .selectAll("text")
-    .data(arcs)
-    .join("text")
-      .attr("transform", d => `translate(${arcLabel.centroid(d)})`)
-      .call(text => text.append("tspan")
-          .attr("y", "-0.4em")
-          .attr("font-weight", "bold")
-          .text(d => d.data.name))
-      .call(text => text.filter(d => (d.endAngle - d.startAngle) > 0.25).append("tspan")
-          .attr("x", 0)
-          .attr("y", "0.7em")
-          .attr("fill-opacity", 0.7)
-          .text(d => d.data.value.toLocaleString()));
-
-  return svg.node();
-}
-                                    data = Array(18) [
-  0: Object {name: "<5", value: 19912018}
-  1: Object {name: "5-9", value: 20501982}
-  2: Object {name: "10-14", value: 20679786}
-  3: Object {name: "15-19", value: 21354481}
-  4: Object {name: "20-24", value: 22604232}
-  5: Object {name: "25-29", value: 21698010}
-  6: Object {name: "30-34", value: 21183639}
-  7: Object {name: "35-39", value: 19855782}
-  8: Object {name: "40-44", value: 20796128}
-  9: Object {name: "45-49", value: 21370368}
-  10: Object {name: "50-54", value: 22525490}
-  11: Object {name: "55-59", value: 21001947}
-  12: Object {name: "60-64", value: 18415681}
-  13: Object {name: "65-69", value: 14547446}
-  14: Object {name: "70-74", value: 10587721}
-  15: Object {name: "75-79", value: 7730129}
-  16: Object {name: "80-84", value: 5811429}
-  17: Object {name: "≥85", value: 5938752}
-  columns: Array(2) ["name", "value"]
-]
+  return chart;
+});
                                     </script>
+                                    
                                     <h4 class="text-white">Frequency of Endagered Sites by Criteria</h4>
                                     <p class="mb-0 text-white-50">Another example of a project with its respective description. These sections work well responsively as well, try this theme on a small screen!</p>
                                     <hr class="d-none d-lg-block mb-0 mr-0" />
