@@ -274,6 +274,7 @@
                                       .enter()
                                       .append('text')
                                         .text( function(d) { console.log(d.data.key) ; return d.data.key } )
+                                        style('fill', 'white')
                                         .attr('transform', function(d) {
                                             var pos = outerArc.centroid(d);
                                             var midangle = d.startAngle + (d.endAngle - d.startAngle) / 2
