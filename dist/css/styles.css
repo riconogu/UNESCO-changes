@@ -107,6 +107,10 @@ address {
   line-height: inherit;
 }
 
+ticks {
+	color: #b8b8b8;
+}
+
 ol,
 ul,
 dl {

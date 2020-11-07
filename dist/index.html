@@ -123,126 +123,139 @@
         <!-- Data-->
         <section class="projects-section bg-light" id="projects">
             <div class="container">
+				<div class="row justify-content-center no-gutters">
+				<div class="bg-black text-center h-100 project">
+				<div class="d-flex">
                    <!-- Project One Row-->
-                <div class="row justify-content-center no-gutters">
-                 		<!-- Create a div where the graph will take place -->
-                        <div id="my_dataviz"></div>
-                        <script>
+						<!-- Create a div where the graph will take place -->
+						<div id="my_dataviz"></div>
+						<script>
 
-                        // set the dimensions and margins of the graph
-                        var margin = {top: 20, right: 30, bottom: 0, left: 10},
-                            width = 460 - margin.left - margin.right,
-                            height = 400 - margin.top - margin.bottom;
+						// set the dimensions and margins of the graph
+						var margin = {top: 40, right: 0, bottom: 20, left: 100},
+							width = 1400 - margin.left - margin.right,
+							height = 500 - margin.top - margin.bottom;
 
-                        // append the svg object to the body of the page
-                        var svg = d3.select("#my_dataviz")
-                          .append("svg")
-                            .attr("width", width + margin.left + margin.right)
-                            .attr("height", height + margin.top + margin.bottom)
-                          .append("g")
-                            .attr("transform",
-                                  "translate(" + margin.left + "," + margin.top + ")");
+						// append the svg object to the body of the page
+						var svg = d3.select("#my_dataviz")
+						  .append("svg")
+							.attr("width", width + margin.left + margin.right)
+							.attr("height", height + margin.top + margin.bottom)
+						  .append("g")
+							.attr("transform",
+								  "translate(" + margin.left + "," + margin.top + ")");
 
-                        // Parse the Data
-                        d3.csv("https://raw.githubusercontent.com/riconogu/UNESCO-changes/master/dist/assets/freq_table.csv", function(data) {
+						// Parse the Data
+						d3.csv("https://raw.githubusercontent.com/riconogu/UNESCO-changes/master/dist/assets/cat_table.csv", function(data) {
 
-                          // List of groups = header of the csv files
-                          var keys = data.columns.slice(1)
+						  // List of groups = header of the csv files
+						  var keys = data.columns.slice(1)
 
-                          // Add X axis
-                          var x = d3.scaleLinear()
-                            .domain(d3.extent(data, function(d) { return d.Year; }))
-                            .range([ 0, width ]);
-                          svg.append("g")
-                            .attr("transform", "translate(0," + height*0.8 + ")")
-                            .call(d3.axisBottom(x).tickSize(-height*.7).tickValues([1995,2000,2005]))
-                            .select(".domain").remove()
-                          // Customization
-                          svg.selectAll(".tick line").attr("stroke", "#b8b8b8")
+						  // Add X axis
+						  var x = d3.scaleLinear()
+							.domain(d3.extent(data, function(d) { return d.Year; }))
+							.range([ 0, 2.5*width ]);
+						  svg.append("g")
+							.attr("transform", "translate(0," + height + ")")
+							.call(d3.axisBottom(x).tickSize(-height*.8).tickValues([1980,1984,1988,1992,1996,2000,2004,2008,2012,2016]).tickFormat(d3.format(".0f")))
+							.select(".domain").remove()
+						  // Customization
+						  svg.selectAll(".tick line").attr("stroke", "#b8b8b8")
+						  svg.selectAll("g.tick").attr("class", "ticks").style("stroke", "#b8b8b8").style("fill", "#b8b8b8");
 
-                          // Add X axis label:
-                          svg.append("text")
-                              .attr("text-anchor", "end")
-                              .attr("x", width)
-                              .attr("y", height-30)
-                              .text("Time (year)");
+						  // Add X axis label:
+						  //svg.append("text")
+						//	  .attr("text-anchor", "end")
+							//  .attr("x", 2.5*width/2+30)
+							  //.attr("y", height+30)
+							  //.text("Time (year)")
+							  //.style("fill", "#b8b8b8");
 
-                          // Add Y axis
-                          var y = d3.scaleLinear()
-                            .domain([-50, 50])
-                            //.domain([-100000, 100000])
-                            .range([ height, 0 ]);
+						  // Add Y axis
+						  var y = d3.scaleLinear()
+							.domain([-190, 190])
+							//.domain([-100000, 100000])
+							.range([ height, 0 ]);
 
-                          // color palette
-                          var color = d3.scaleOrdinal()
-                            .domain(keys)
-                            .range(d3.schemeDark2);
+						  // color palette
+						  var color = d3.scaleOrdinal()
+							.domain(keys)
+							.range(d3.schemeDark2);
 
-                          //stack the data?
-                          var stackedData = d3.stack()
-                            .offset(d3.stackOffsetSilhouette)
-                            .keys(keys)
-                            (data)
+						  //stack the data?
+						  var stackedData = d3.stack()
+							.offset(d3.stackOffsetSilhouette)
+							.keys(keys)
+							(data)
 
-                          // create a tooltip
-                          var Tooltip = svg
-                            .append("text")
-                            .attr("x", 0)
-                            .attr("y", 0)
-                            .style("opacity", 0)
-                            .style("font-size", 17)
+						  // create a tooltip
+						  var Tooltip = svg
+							.append("text")
+							.attr("x", 0)
+							.attr("y", -10)
+							.style("opacity", 0)
+							.style("font-size", 20)
+							.style("white-space","pre-wrap")
+							.style("text-align","center")
+							.style("fill", "#b8b8b8")
 
-                          // Three function that change the tooltip when user hover / move / leave a cell
-                          var mouseover = function(d) {
-                            Tooltip.style("opacity", 1)
-                            d3.selectAll(".myArea").style("opacity", .2)
-                            d3.select(this)
-                              .style("stroke", "black")
-                              .style("opacity", 1)
-                          }
-                          var mousemove = function(d,i) {
-                            grp = keys[i]
-                            Tooltip.text(grp)
-                          }
-                          var mouseleave = function(d) {
-                            Tooltip.style("opacity", 0)
-                            d3.selectAll(".myArea").style("opacity", 1).style("stroke", "none")
-                           }
+						  // Three function that change the tooltip when user hover / move / leave a cell
+						  var mouseover = function(d) {
+							Tooltip.style("opacity", 1).style("text-align","center")
+							d3.selectAll(".myArea").style("opacity", .2)
+							d3.select(this)
+							  .style("stroke", "white")
+							  .style("opacity", 1)
+							  .style("text-align","center")
+						  }
+						  var mousemove = function(d,i) {
+							grp = keys[i]
+							Tooltip.text(grp)
+						  }
+						  var mouseleave = function(d) {
+							Tooltip.style("opacity", 0)
+							d3.selectAll(".myArea").style("opacity", 1).style("stroke", "none")
+						   }
 
-                          // Area generator
-                          var area = d3.area()
-                            .x(function(d) { return x(d.data.Year); })
-                            .y0(function(d) { return y(d[0]); })
-                            .y1(function(d) { return y(d[1]); })
+						  // Area generator
+						  var area = d3.area()
+							.x(function(d) { return x(d.data.Year); })
+							.y0(function(d) { return y(d[0]); })
+							.y1(function(d) { return y(d[1]); })
 
-                          // Show the areas
-                          svg
-                            .selectAll("mylayers")
-                            .data(stackedData)
-                            .enter()
-                            .append("path")
-                              .attr("class", "myArea")
-                              .style("fill", function(d) { return color(d.key); })
-                              .attr("d", area)
-                              .on("mouseover", mouseover)
-                              .on("mousemove", mousemove)
-                              .on("mouseleave", mouseleave)
+						  // Show the areas
+						  svg
+							.selectAll("mylayers")
+							.data(stackedData)
+							.enter()
+							.append("path")
+							  .attr("class", "myArea")
+							  .style("fill", function(d) { return color(d.key); })
+							  .attr("d", area)
+							  .on("mouseover", mouseover)
+							  .on("mousemove", mousemove)
+							  .on("mouseleave", mouseleave)
 
-                        })
-                        </script>
+						})
+						</script>
+						</div>
+						<h4 class="text-white">Frequency Criterias used:</h4>
+						<p class="mb-0 text-white">Hoover over graph for criteria definitions. Until the end of 2004, World Heritage sites were selected on the basis of six cultural and four natural criteria. With the adoption of the revised Operational Guidelines for the Implementation of the World Heritage Convention, only one set of ten criteria exists.</p>
+						<hr class="d-none d-lg-block mb-0 mr-0" />
                 </div>
+                </div>
+                <br>
                 
                 <!-- Endangered Sites-->
-                <div class="row justify-content-center no-gutters">
-                              <div class="bg-black text-center h-100 project">
-                            <div class="d-flex h-100">
-                                <div class="project-text w-100 my-auto text-center text-lg-right">
+                <div class="row justify-content-center no-gutters mb-5 mb-lg-0">
+					<div class="col-lg-6">
+						<div class="bg-black text-center h-100 project">
                                 <!-- Pie Chart Example -->
                                 <div id="piechart"></div>
                                 <script>
                                     // set the dimensions and margins of the graph
-                                    var width = 200
-                                        height = 200
+                                    var width = 500
+                                        height = 400
                                         margin = 10
 
                                     // The radius of the pieplot is half the width or half the height (smallest one). I subtract a bit of margin.
@@ -329,11 +342,18 @@
                                             return (midangle < Math.PI ? 'start' : 'end')
                                         })
 
-                                    </script>                                    
+                                    </script>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+							   <div class="bg-black text-center h-100 project">
+                                <div class="d-flex h-100">
+                                <div class="project-text w-100 my-auto text-center text-lg-left">                                    
                                     <h4 class="text-white">Frequency of Endagered Sites by Criteria</h4>
                                     <p class="mb-0 text-white-50">As of July 2019, there are 53 entries (17 natural, 36 cultural) on the List of World Heritage in Danger. Arranged by the UNESCO regions, 21 of the listed sites are located in the Arab States (of which 6 are located in Syria and 5 in Libya), 16 in Africa (of which 5 are in the Democratic Republic of the Congo), 6 in Latin America and the Caribbean, 6 in Asia and the Pacific, and 4 in Europe and North America. The majority of the endangered natural sites (12) are located in Africa.</p>
-                                    <hr class="d-none d-lg-block mb-0 mr-0" />
+                                    <!--<hr class="d-none d-lg-block mb-0 mr-0" />-->
                                 </div>
+                            </div>
                             </div>
                         </div>
                     </div>
