@@ -185,7 +185,7 @@
 						  // color palette
 						  var color = d3.scaleOrdinal()
 							.domain(keys)
-							.range(["white", "blue"]);
+							.range(d3.schemeDark2);
 
 						  //stack the data?
 						  var stackedData = d3.stack()
@@ -280,7 +280,7 @@
                                     // set the color scale
                                     var color = d3.scaleOrdinal()
                                       .domain(["a", "b", "c", "d", "e", "f", "g", "h"])
-                                      .range(d3.schemeDark2);
+                                      .range(["#64A19D", "#AEB5C1"]);
 
                                     // Compute the position of each group on the pie:
                                     var pie = d3.pie()
