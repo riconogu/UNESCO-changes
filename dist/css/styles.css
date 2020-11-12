@@ -10424,7 +10424,7 @@ body {
 
 .about-section {
   padding-top: 10rem;
-  background: #f8f9fa;
+  background: linear-gradient(to top, #FFFFFF, rgba(248,249,250);
 }
 .about-section p {
   margin-bottom: 5rem;
